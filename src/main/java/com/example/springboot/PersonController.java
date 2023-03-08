@@ -1,31 +1,39 @@
 package com.example.springboot;
+
+import com.example.springboot.entity.Person;
+import com.example.springboot.repository.PersonRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
-import java.util.Vector;
 
-@RestController("/names")
+@RestController
+@RequestMapping("/names")
 public class PersonController {
-    List<String> names = new Vector<>();
-    @GetMapping("/{id}")
-    String getANme(@PathVariable int id){
-        return names.get(id);
 
+    private final PersonRepository repo;
+
+    public PersonController(PersonRepository personRepository){
+        repo = personRepository;
+    }
+
+    @GetMapping("/{id}")
+    Person getAName(@PathVariable long id) {
+        return repo.findById(id).orElseThrow();
     }
 
     @GetMapping
-    List<String> getNames(){
-        return names;
+    List<Person> getNames() {
+        return repo.findAll();
     }
+
     @PostMapping
-String addName (@RequestBody String name){
-        names.add(name);
-        return name;
+    void addName(@RequestBody Person person) {
+        repo.save(person);
     }
+
     @GetMapping("/lang")
-    String preferredLanguage(@RequestHeader(HttpHeaders.ACCEPT_LANGUAGE)String lang){
+    String preferedLanguage(@RequestHeader(HttpHeaders.ACCEPT_LANGUAGE) String lang){
         return lang;
     }
 }

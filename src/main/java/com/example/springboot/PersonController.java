@@ -33,7 +33,7 @@ public class PersonController {
     }
 
     @GetMapping("/lang")
-    String preferedLanguage(@RequestHeader(HttpHeaders.ACCEPT_LANGUAGE) String lang){
+    String preferredLanguage(@RequestHeader(HttpHeaders.ACCEPT_LANGUAGE) String lang){
         return lang;
     }
 }
